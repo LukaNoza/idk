@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Management</title>
+  <style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+    }
+    .contact-card {
+      border: 1px solid #aa4b4b;
+      padding: 10px;
+      margin: 10px;
+      width: 200px;
+      display: inline-block;
+      border-radius: 10%;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    * {
+        margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Contact Management</h1>
+
+  <div>
+    <label for="fullName">Full Name:</label>
+    <input type="text" id="fullName" placeholder="Enter full name">
+    <label for="imageUrl">Image URL:</label>
+    <input type="text" id="imageUrl" placeholder="Enter image URL">
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber" placeholder="Enter phone number">
+    <button onclick="addContact()">Add Contact</button>
+  </div>
+
+  <div>
+    <label for="searchFullName">Search by Full Name:</label>
+    <input type="text" id="searchFullName" oninput="searchContacts()">
+  </div>
+
+  <div id="contactList">
+  </div>
+
+  <script>
+    let contacts = [];
+
+    function addContact() {
+      const fullName = document.getElementById('fullName').value;
+      const imageUrl = document.getElementById('imageUrl').value;
+      const phoneNumber = document.getElementById('phoneNumber').value;
+
+      if (fullName && imageUrl && phoneNumber) {
+        const contact = { fullName, imageUrl, phoneNumber };
+        contacts.push(contact);
+        displayContacts();
+        clearForm();
+      } else {
+        alert('Please fill in all fields');
+      }
+    }
+
+    function displayContacts() {
+      const contactListDiv = document.getElementById('contactList');
+      contactListDiv.innerHTML = '';
+
+      contacts.forEach(contact => {
+        const contactCard = document.createElement('div');
+        contactCard.className = 'contact-card';
+
+        const image = document.createElement('img');
+        image.src = contact.imageUrl;
+        contactCard.appendChild(image);
+
+        const nameParagraph = document.createElement('p');
+        nameParagraph.textContent = contact.fullName;
+        contactCard.appendChild(nameParagraph);
+
+        const phoneParagraph = document.createElement('p');
+        phoneParagraph.textContent = contact.phoneNumber;
+        contactCard.appendChild(phoneParagraph);
+
+        contactListDiv.appendChild(contactCard);
+      });
+    }
+
+    function clearForm() {
+      document.getElementById('fullName').value = '';
+      document.getElementById('imageUrl').value = '';
+      document.getElementById('phoneNumber').value = '';
+    }
+
+    function searchContacts() {
+      const searchFullName = document.getElementById('searchFullName').value.toLowerCase();
+      const filteredContacts = contacts.filter(contact => contact.fullName.toLowerCase().includes(searchFullName));
+      displayContacts(filteredContacts);
+    }
+  </script>
+
+</body>
+</html>
